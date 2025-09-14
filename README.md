@@ -5,11 +5,11 @@
 - At the end of each checkpoint, mark a release tag and add your report.
 
 ### Mark a release tag
-# end of Release 1:
+###  end of Release 1:
 git tag release-1
 git push origin release-1
 
-# end of Release 2:
+###  end of Release 2:
 git tag release-2
 git push origin release-2
 
