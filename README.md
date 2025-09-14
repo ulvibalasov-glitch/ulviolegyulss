@@ -15,5 +15,7 @@ git push origin release-2
 
 ### Folders for documents
 docs/release-1/  # slides, SRS/SDP updates, test report
+
 docs/release-2/
-docs/release-3/...
+
+docs/release-3/
