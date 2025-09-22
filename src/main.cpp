@@ -51,7 +51,7 @@ private:
     double criticalMin = 100;
 
 public:
-    double setRate(Currency from, Currency to) {
+    double getRate(Currency from, Currency to) {
         if (from == USD && to == EUR) return 0.85;
         if (from == EUR && to == USD) return 1.18;
         if (from == USD && to == GBP) return 0.75;
