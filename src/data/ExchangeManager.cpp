@@ -1,14 +1,20 @@
 #include "ExchangeManager.h"
 #include <iostream>
+#include <stdexcept>   // <-- добавили для исключений
 
 double ExchangeManager::getRate(Currency from, Currency to) {
+    // Известные пары курсов
     if (from == USD && to == EUR) return Constants::USD_TO_EUR;
     if (from == EUR && to == USD) return Constants::EUR_TO_USD;
+
     if (from == USD && to == GBP) return Constants::USD_TO_GBP;
     if (from == GBP && to == USD) return Constants::GBP_TO_USD;
+
     if (from == EUR && to == GBP) return Constants::EUR_TO_GBP;
     if (from == GBP && to == EUR) return Constants::GBP_TO_EUR;
-    return 1.0;
+
+    // Если пара не поддерживается — репозиторий сигналит об ошибке
+    throw std::runtime_error("Exchange rate not found for selected currency pair");
 }
 
 bool ExchangeManager::hasEnoughReserve(Currency currency, double amount) {
