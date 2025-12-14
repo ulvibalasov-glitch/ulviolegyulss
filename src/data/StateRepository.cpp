@@ -1,5 +1,6 @@
 #include "StateRepository.h"
 #include <fstream>
+#include <sstream>
 
 StateRepository::StateRepository() {
     capacity = 4;
@@ -39,35 +40,43 @@ const SystemState& StateRepository::get(int index) const {
 }
 
 bool StateRepository::saveToFile(const std::string& filename) const {
-    std::ofstream out(filename);
-    if (!out.is_open()) return false;
-
-    out << size << "\n";
-    for (int i = 0; i < size; ++i) {
-        out << data[i].usd << " "
-            << data[i].eur << " "
-            << data[i].gbp << " "
-            << data[i].profit << "\n";
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        return false;
     }
 
-    out.close();
+    for (int i = 0; i < size; ++i) {
+        file << data[i].usd << " "
+             << data[i].eur << " "
+             << data[i].gbp << " "
+             << data[i].profit << "\n";
+    }
+
+    file.close();
     return true;
 }
 
 bool StateRepository::loadFromFile(const std::string& filename) {
-    std::ifstream in(filename);
-    if (!in.is_open()) return false;
-
-    int countFromFile;
-    in >> countFromFile;
-
-    size = 0;
-    for (int i = 0; i < countFromFile; ++i) {
-        SystemState s;
-        in >> s.usd >> s.eur >> s.gbp >> s.profit;
-        add(s);
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        return false;
     }
 
-    in.close();
+    size = 0; // очищаем репозиторий
+
+    std::string line;
+    while (std::getline(file, line)) {
+        std::istringstream iss(line);
+        SystemState state;
+
+        if (!(iss >> state.usd >> state.eur >> state.gbp >> state.profit)) {
+            continue; // пропускаем битые строки
+        }
+
+        add(state);
+    }
+
+    file.close();
     return true;
 }
+
