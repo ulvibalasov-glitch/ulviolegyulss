@@ -70,7 +70,7 @@ bool StateRepository::loadFromFile(const std::string& filename) {
         SystemState state;
 
         if (!(iss >> state.usd >> state.eur >> state.gbp >> state.profit)) {
-            continue; // пропускаем битые строки
+            continue;
         }
 
         add(state);
