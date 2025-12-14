@@ -52,31 +52,27 @@ bool StateRepository::saveToFile(const std::string& filename) const {
              << data[i].profit << "\n";
     }
 
-    file.close();
     return true;
 }
 
 bool StateRepository::loadFromFile(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
-        return false;
+        size = 0;
+        return true;
     }
 
-    size = 0; // очищаем репозиторий
-
+    size = 0;
     std::string line;
+
     while (std::getline(file, line)) {
         std::istringstream iss(line);
         SystemState state;
 
-        if (!(iss >> state.usd >> state.eur >> state.gbp >> state.profit)) {
-            continue;
+        if (iss >> state.usd >> state.eur >> state.gbp >> state.profit) {
+            add(state);
         }
-
-        add(state);
     }
 
-    file.close();
     return true;
 }
-
